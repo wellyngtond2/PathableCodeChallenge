@@ -34,7 +34,7 @@ export default function Events() {
   return (
     <>
       <Container>
-        <EventList>
+        <EventList id="communityList">
           {communities.map(item => (
             <CommunityCard
               key={item.name}
@@ -50,7 +50,7 @@ export default function Events() {
             </CommunityCard>
           ))}
         </EventList>
-        <EventList>
+        <EventList id="peopleList">
           {peoples.map(item => (
             <PeopleCard key={item.firstName + item.lastName}>
               <Content> {item.firstName}</Content>
