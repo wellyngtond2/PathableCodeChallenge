@@ -5,7 +5,7 @@ export const Container = styled.div`
   margin: -20px auto 0px auto;
   align-items: center;
   align-self: center;
-  height: 95%;
+  /* height: 100%; */
   background: #f1faee;
 `;
 
@@ -15,4 +15,5 @@ export const List = styled.ul`
   align-self: center;
   align-items: center;
   justify-content: space-around;
+  flex-wrap: wrap;
 `;
