@@ -1,29 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { Container, List as EventList } from './styles/events';
+import { Container, List as EventList, EventResume } from './styles/events';
 import { Card as CommunityCard, Label, Content } from './styles/card';
-import { Card as PeopleCard } from './styles/people';
+import { Card as PeopleCard, PeopleButton } from './styles/people';
 import { People as PeopleCollection } from '../collections/people';
 import { Communities } from '../collections/communities';
 import { Tracker } from 'meteor/tracker';
-import { MdComputer } from 'react-icons/md';
+import { MdComputer, MdBusiness } from 'react-icons/md';
+import { TiBusinessCard } from 'react-icons/ti';
 
 export default function Events() {
-  const [peoples, setPeoples] = useState([]);
+  const [people, setPeople] = useState([]);
   const [communities, setCommunities] = useState([]);
-  const [communityCliked, setClikedCommunity] = useState('');
+  const [communityClicked, setClickedCommunity] = useState('');
+  const [checkedPeople, setcheckedPeople] = useState(0);
 
   function SetActiveEvent(id) {
-    console.log('gg', id);
-    setClikedCommunity(id);
+    setClickedCommunity(id);
+  }
+
+  function CheckinPeople(id) {
+    PeopleCollection.update(id, { checked: true });
+  }
+
+  function CheckoutPeople(id) {
+    PeopleCollection.update(id, { checked: false });
   }
 
   useEffect(() => {
     Tracker.autorun(() => {
-      setPeoples(
-        PeopleCollection.find({ communityId: communityCliked }).fetch()
+      setcheckedPeople(
+        PeopleCollection.find({
+          checked: true,
+        }).fetch().length
       );
     });
-  }, [communityCliked]);
+  }, []);
+
+  useEffect(() => {
+    Tracker.autorun(() => {
+      setPeople(
+        PeopleCollection.find({ communityId: communityClicked }).fetch()
+      );
+    });
+  }, [communityClicked]);
 
   useEffect(() => {
     Tracker.autorun(() => {
@@ -50,10 +69,35 @@ export default function Events() {
             </CommunityCard>
           ))}
         </EventList>
+        <EventResume>
+          <h1>Event Resume</h1>
+          <div>
+            <p>People in the event right now: {checkedPeople}</p>
+            <p>People not checked-in:{communities.length - checkedPeople} </p>
+          </div>
+        </EventResume>
         <EventList id="peopleList">
-          {peoples.map(item => (
+          {people.map(item => (
             <PeopleCard key={item.firstName + item.lastName}>
-              <Content> {item.firstName}</Content>
+              <Content>
+                {' '}
+                <h4>{`${item.lastName}, ${item.firstName}`}</h4>
+                <p>
+                  <TiBusinessCard />
+                  {item.title || 'N/A'}
+                </p>
+                <p>
+                  <MdBusiness />
+                  {item.companyName || 'N/A'}
+                </p>
+                <PeopleButton
+                  type="button"
+                  checked={false}
+                  onClick={() => CheckinPeople(item._id)}
+                >
+                  Check-in
+                </PeopleButton>
+              </Content>
             </PeopleCard>
           ))}
         </EventList>
