@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Card = styled.div`
+export const Card = styled.li`
   list-style-type: none;
   width: 200px;
   text-decoration: none;
@@ -28,13 +28,15 @@ export const Card = styled.div`
 `;
 
 export const PeopleButton = styled.button`
-  background: ${props => (!props.checked ? '#34A853' : '#EA4335')};
+  /* verify actual state of button click  and set background reference */
+  background: ${props =>
+    props.disabled ? '#ccc' : !props.checked ? '#34A853' : '#EA4335'};
   color: #fff;
   border: 0;
   overflow: hidden;
   margin-left: auto;
   padding: 4px;
-  cursor: pointer;
+  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
   width: 100%;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;

@@ -37,6 +37,6 @@ export const EventResume = styled.div`
   h1 {
     font-size: 15px;
     color: rgba(0, 0, 0, 0.8);
-    margin-bottom: 5px;
+    margin: 10px;
   }
 `;

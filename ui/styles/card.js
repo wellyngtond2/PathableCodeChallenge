@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Card = styled.div`
+export const Card = styled.li`
   list-style-type: none;
   width: 270px;
   height: 110px;
