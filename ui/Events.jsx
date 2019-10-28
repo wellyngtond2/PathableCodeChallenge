@@ -19,11 +19,12 @@ export default function Events() {
   }
 
   function CheckinPeople(id) {
-    PeopleCollection.update(id, { checked: true });
+    PeopleCollection.update(id, { $set: { checked: true } });
   }
 
   function CheckoutPeople(id) {
-    PeopleCollection.update(id, { checked: false });
+    const isCheckin = PeopleCollection.findOne({ id, checked: true });
+    if (isCheckin) PeopleCollection.update(id, { checked: false });
   }
 
   useEffect(() => {
@@ -31,10 +32,11 @@ export default function Events() {
       setcheckedPeople(
         PeopleCollection.find({
           checked: true,
+          communityId: communityClicked,
         }).fetch().length
       );
     });
-  }, []);
+  }, [communityClicked]);
 
   useEffect(() => {
     Tracker.autorun(() => {
@@ -73,7 +75,7 @@ export default function Events() {
           <h1>Event Resume</h1>
           <div>
             <p>People in the event right now: {checkedPeople}</p>
-            <p>People not checked-in:{communities.length - checkedPeople} </p>
+            <p>People not checked-in: {communities.length - checkedPeople} </p>
           </div>
         </EventResume>
         <EventList id="peopleList">
