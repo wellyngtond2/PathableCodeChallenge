@@ -3,11 +3,9 @@ import styled from 'styled-components';
 export const Card = styled.div`
   list-style-type: none;
   width: 200px;
-  height: 80px;
   text-decoration: none;
   margin: 10px;
   background: #fff;
-  border-bottom: 5px solid transparent;
   box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.4);
   border-radius: 2px;
 
@@ -30,12 +28,14 @@ export const Card = styled.div`
 `;
 
 export const PeopleButton = styled.button`
-  background: #00b400;
+  background: ${props => (!props.checked ? '#34A853' : '#EA4335')};
   color: #fff;
   border: 0;
-  border-radius: 3px;
   overflow: hidden;
   margin-left: auto;
-  padding: 2px;
+  padding: 4px;
   cursor: pointer;
+  width: 100%;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
 `;

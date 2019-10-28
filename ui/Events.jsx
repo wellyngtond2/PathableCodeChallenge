@@ -23,8 +23,8 @@ export default function Events() {
   }
 
   function CheckoutPeople(id) {
-    const isCheckin = PeopleCollection.findOne({ id, checked: true });
-    if (isCheckin) PeopleCollection.update(id, { checked: false });
+    const isCheckin = PeopleCollection.findOne({ _id: id, checked: true });
+    if (isCheckin) PeopleCollection.update(id, { $set: { checked: false } });
   }
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function Events() {
           <h1>Event Resume</h1>
           <div>
             <p>People in the event right now: {checkedPeople}</p>
-            <p>People not checked-in: {communities.length - checkedPeople} </p>
+            <p>People not checked-in: {people.length - checkedPeople} </p>
           </div>
         </EventResume>
         <EventList id="peopleList">
@@ -92,14 +92,18 @@ export default function Events() {
                   <MdBusiness />
                   {item.companyName || 'N/A'}
                 </p>
-                <PeopleButton
-                  type="button"
-                  checked={false}
-                  onClick={() => CheckinPeople(item._id)}
-                >
-                  Check-in
-                </PeopleButton>
               </Content>
+              <PeopleButton
+                type="button"
+                checked={item.checked}
+                onClick={() =>
+                  !item.checked
+                    ? CheckinPeople(item._id)
+                    : CheckoutPeople(item._id)
+                }
+              >
+                {!item.checked ? 'Check-in' : 'Check-out'}
+              </PeopleButton>
             </PeopleCard>
           ))}
         </EventList>
